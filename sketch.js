@@ -12,6 +12,8 @@ let myId
 let gameState = "Default"
 var destId
 
+let myTurn = null
+let board = []
 
 function setup() {
     createCanvas(canvasW, canvasH)
@@ -46,6 +48,37 @@ function setup() {
         destId = connectionInput.value()
         joinConnection()
     })
+///
+background(50)
+    for (let i = 0; i < 4; i++) {
+        board[i] = []
+        for (let j = 0; j < 4; j++) {
+            board[i][j] = {
+                color: "",
+                x: i,
+                y: j,
+                piece: "none"
+            }
+            if (j % 2 == i % 2) {
+                board[i][j].color = "white"
+            }
+            else {
+                board[i][j].color = "black"
+            }
+        }
+    }
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+            
+            if (board[i][j].color == "white") {
+                fill(240)
+            }
+            else if (board[i][j].color == "black") {
+                fill(30)
+            }
+            rect(board[i][j].x * 100 + canvasW/4, board[i][j].y * 100 + canvasH/4, 100, 100)
+        }
+    }
 }
 
 function createPeer() {
@@ -76,6 +109,7 @@ function begin() {
             return
         }
         conn = c
+        myTurn = true
         startGame()
         console.log(2)
     })
@@ -92,6 +126,7 @@ function joinConnection() {
             opponent.peerId = destId
             connectionInput.hide()
             submitButton.hide()
+            myTurn = false
             startGame()
         })
     })
@@ -99,6 +134,7 @@ function joinConnection() {
 
 function startGame() {
     background(100)
+    
 }
 
 function draw() {
@@ -107,7 +143,7 @@ function draw() {
         hostButton.hide()
     }
     else {
-        background(50)
+        
         connectButton.show()
         hostButton.show()
     }
