@@ -19,6 +19,8 @@ let canvasOffsetW = canvasW/4
 let canvasOffsetH = canvasH/4
 
 let mousex, mousey
+let lock = true
+let preMouseX, preMouseY, initalOffsetX, initialOffesetY
 
 function setup() {
     createCanvas(canvasW, canvasH)
@@ -73,6 +75,79 @@ function setup() {
         }
     }
 }
+
+function draw() {
+    background(50)
+    if (mouseX >= canvasOffsetW && mouseX <= canvasW - canvasOffsetW - tileSize / 2 && mouseY >= canvasOffsetH && mouseY <= canvasH - canvasOffsetH - tileSize / 2) {
+        mousex = constrain(Math.floor((mouseX - canvasOffsetW) / tileSize), 0, 3)
+        mousey = constrain(Math.floor((mouseY - canvasOffsetH) / tileSize), 0, 3)
+    }
+    else {
+        mousex = undefined
+        mousey = undefined
+    }
+    if (gameState != "Default") {
+        connectButton.hide()
+        hostButton.hide()
+
+        // if (gameState == "StartGame") {
+            // Drawing the chess board
+            for (let i = 0; i < board.length; i++) {
+                for (let j = 0; j < board[i].length; j++) {
+                    if (board[i][j].color == "white") {
+                        fill(240)
+                    }
+                    else if (board[i][j].color == "black") {
+                        fill(30)
+                    }
+                    stroke(0)
+                    rect(board[i][j].x * tileSize + canvasOffsetW, board[i][j].y * tileSize + canvasOffsetH, tileSize, tileSize)
+                }
+            }
+
+            // Hover Logic
+            if (mousex != undefined && mousey != undefined) {
+                noFill()
+                stroke(255, 204, 100)
+                strokeWeight(3)
+                rect(board[mousex][mousey].x * tileSize + canvasOffsetW, board[mousex][mousey].y * tileSize + canvasOffsetH, tileSize, tileSize)
+                strokeWeight(1)
+            }
+        // }
+    }
+    else {
+        
+        connectButton.show()
+        hostButton.show()
+    }
+}
+
+function mousePressed() {
+
+}
+
+function mouseDragged() {
+    if (lock == true) {
+        lock = false
+        preMouseX = mouseX
+        preMouseY = mouseY
+        initialOffesetX = canvasOffsetW
+        initialOffesetY = canvasOffsetH
+    }
+    differenceX = mouseX - preMouseX
+    differenceY = mouseY - preMouseY
+    canvasOffsetW = differenceX + initialOffesetX
+    canvasOffsetH = differenceY + initialOffesetY
+    canvasOffsetW = constrain(canvasOffsetW,  -tileSize * 4 / 2, canvasW - tileSize * 4 / 2)
+}
+
+function mouseReleased() {
+    lock = true
+}
+
+
+
+// PEER JS
 
 function createPeer() {
     peer = new Peer()
@@ -129,50 +204,4 @@ function joinConnection() {
 function startGame() {
     background(100)
     
-}
-
-function draw() {
-    background(50)
-    if (mouseX >= canvasOffsetW && mouseX <= canvasW - canvasOffsetW - tileSize / 2 && mouseY >= canvasOffsetH && mouseY <= canvasH - canvasOffsetH - tileSize / 2) {
-        mousex = constrain(Math.floor((mouseX - canvasOffsetW) / tileSize), 0, 3)
-        mousey = constrain(Math.floor((mouseY - canvasOffsetH) / tileSize), 0, 3)
-    }
-    else {
-        mousex = undefined
-        mousey = undefined
-    }
-    if (gameState != "Default") {
-        connectButton.hide()
-        hostButton.hide()
-
-        // if (gameState == "StartGame") {
-            // Drawing the chess board
-            for (let i = 0; i < board.length; i++) {
-                for (let j = 0; j < board[i].length; j++) {
-                    if (board[i][j].color == "white") {
-                        fill(240)
-                    }
-                    else if (board[i][j].color == "black") {
-                        fill(30)
-                    }
-                    stroke(0)
-                    rect(board[i][j].x * tileSize + canvasOffsetW, board[i][j].y * tileSize + canvasOffsetH, tileSize, tileSize)
-                }
-            }
-
-            // Hover Logic
-            if (mousex != undefined && mousey != undefined) {
-                noFill()
-                stroke(255, 204, 100)
-                strokeWeight(3)
-                rect(board[mousex][mousey].x * tileSize + canvasOffsetW, board[mousex][mousey].y * tileSize + canvasOffsetH, tileSize, tileSize)
-                strokeWeight(1)
-            }
-        // }
-    }
-    else {
-        
-        connectButton.show()
-        hostButton.show()
-    }
 }
