@@ -78,7 +78,7 @@ function setup() {
 
 function draw() {
     background(50)
-    if (mouseX >= canvasOffsetW && mouseX <= canvasW - canvasOffsetW - tileSize / 2 && mouseY >= canvasOffsetH && mouseY <= canvasH - canvasOffsetH - tileSize / 2) {
+    if (mouseX >= canvasOffsetW && mouseX <= (canvasOffsetW + tileSize * 4) && mouseY >= canvasOffsetH && mouseY <= (canvasOffsetH + tileSize * 4)) {
         mousex = constrain(Math.floor((mouseX - canvasOffsetW) / tileSize), 0, 3)
         mousey = constrain(Math.floor((mouseY - canvasOffsetH) / tileSize), 0, 3)
     }
@@ -120,10 +120,6 @@ function draw() {
         connectButton.show()
         hostButton.show()
     }
-}
-
-function mousePressed() {
-
 }
 
 function mouseDragged() {
