@@ -26,6 +26,7 @@ let whiteKing, whiteQueen, whiteBishop, whiteKnight, whitePawn, whiteRook, black
 let canvas
 
 let preSelection
+let selectionSwitch = true
 
 function setup() {
     canvas = createCanvas(canvasW, canvasH)
@@ -267,6 +268,12 @@ function draw() {
                             strokeWeight(3)
                             rect(board[i][j][k].x * tileSize + canvasOffsetW, (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50, tileSize, tileSize)
                             strokeWeight(1)
+                            for (let possibleMovesCounter = 0; possibleMovesCounter < board[i][j][k].piece.possibleMoves.length; possibleMovesCounter++) {
+                                let movesArray = board[i][j][k].piece.possibleMoves[possibleMovesCounter]
+                                fill(255, 0, 0, 80)
+                                noStroke()
+                                rect(movesArray[0] * tileSize + canvasOffsetW, (movesArray[1] * tileSize + canvasOffsetH) + movesArray[2] * tileSize * 5 + movesArray[2] * 50, tileSize, tileSize)
+                            }
                         }
                     }   
                 }
@@ -280,16 +287,61 @@ function draw() {
 }
 
 function mouseClicked() {
+    
     for (let k = 0; k < 5; k++) {
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board[i].length; j++) {
+                //Selection Logic
                 if (mouseX >= board[i][j][k].x * tileSize + canvasOffsetW && mouseX <= board[i][j][k].x * tileSize + canvasOffsetW + tileSize) {
                     if (mouseY >= (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50 && mouseY <= (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50 + tileSize) {
                         if (preSelection != undefined) {
+                            selectionSwitch = true
+                            for (let a = 0; a < preSelection.piece.possibleMoves.length; a++) {
+                                if (i == preSelection.piece.possibleMoves[a][0] && j == preSelection.piece.possibleMoves[a][1] && k == preSelection.piece.possibleMoves[a][2]) {
+                                    board[i][j][k].piece.img = preSelection.piece.img
+                                    preSelection.piece.img = null
+                                    preSelection.piece.possibleMoves = []
+                                }
+                            }
                             preSelection.selected = false
+                            preSelection.piece.possibleMoves = []
                         }
                         board[i][j][k].selected = true
                         preSelection = board[i][j][k]
+                        if (preSelection.piece.img != null && selectionSwitch == true) {
+                            switch (preSelection.piece.img) {
+                                case "whitePawn":
+                                    selectionSwitch = false
+                                    let max
+                                    if ((k == 4 || k == 3) && j == 3) {
+                                        max = 2
+                                    }
+                                    else {
+                                        max = 1
+                                    }
+
+                                    let findPiece = function(a, b) {
+                                        if (a < max) {
+                                            if (j - a - 1 >= 0) {
+                                                if (board[i][j - a - 1][k].piece.img == null) {
+                                                    preSelection.piece.possibleMoves.push([i, j - a - 1, k])
+                                                }
+                                            }
+                                            return findPiece(a + 1, b)
+                                        }
+                                        else if (b < max) {
+                                            if (k - b - 1 >= 0) {
+                                                if (board[i][j][k - b - 1].piece.img == null) {
+                                                    preSelection.piece.possibleMoves.push([i, j, k - b - 1])
+                                                }
+                                            }
+                                            return findPiece(a, b + 1)
+                                        }
+                                    }
+                                    findPiece(0, 0)
+                                break
+                            }
+                        }
                     }
                 }
             }   
