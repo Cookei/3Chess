@@ -15,15 +15,20 @@ var destId
 let myTurn = null
 let board = []
 let tileSize = 100
-let canvasOffsetW = canvasW/4
-let canvasOffsetH = canvasH/4
+let canvasOffsetW = (canvasW - tileSize * 5) / 2
+let canvasOffsetH = canvasH/10
 
 let mousex, mousey
 let lock = true
 let preMouseX, preMouseY, initalOffsetX, initialOffesetY
 
+let whiteKing, whiteQueen, whiteBishop, whiteKnight, whitePawn, whiteRook, blackKing, blackQueen, blackBishop, blackKnight, blackPawn, blackRook
+let canvas
+
 function setup() {
-    createCanvas(canvasW, canvasH)
+    canvas = createCanvas(canvasW, canvasH)
+
+    //Host Button
     hostButton = createButton("Host")
     hostButton.position(canvasW/3 - canvasW/10/2, canvasH/2 - 50/2)
     hostButton.size(canvasW/10, 50)
@@ -56,21 +61,124 @@ function setup() {
         joinConnection()
     })
 
+    //#region Piece Variable Declaration
+    whiteKing = new Image()
+    whiteKing.src = "img/white/king.png"
+    whiteQueen = new Image()
+    whiteQueen.src = "img/white/queen.png"
+    whiteBishop = new Image()
+    whiteBishop.src = "img/white/bishop.png"
+    whiteKnight = new Image()
+    whiteKnight.src = "img/white/knight.png"
+    whitePawn = new Image()
+    whitePawn.src = "img/white/pawn.png"
+    whiteRook = new Image()
+    whiteRook.src = "img/white/rook.png"
+
+    blackKing = new Image()
+    blackKing.src = "img/black/king.png"
+    blackQueen = new Image()
+    blackQueen.src = "img/black/queen.png"
+    blackBishop = new Image()
+    blackBishop.src = "img/black/bishop.png"
+    blackKnight = new Image()
+    blackKnight.src = "img/black/knight.png"
+    blackPawn = new Image()
+    blackPawn.src = "img/black/pawn.png"
+    blackRook = new Image()
+    blackRook.src = "img/black/rook.png"
+    //#endregion
+
     //Board creation
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
         board[i] = []
-        for (let j = 0; j < 4; j++) {
-            board[i][j] = {
-                color: "",
-                x: i,
-                y: j,
-                piece: "none",
-            }
-            if (j % 2 == i % 2) {
-                board[i][j].color = "white"
-            }
-            else {
-                board[i][j].color = "black"
+        for (let j = 0; j < 5; j++) {
+            board[i][j] = []
+            for (let k = 0; k < 5; k++) {
+                board[i][j][k] = {
+                    color: "",
+                    x: i,
+                    y: j,
+                    z: k,
+                    piece: {
+                        img: "",
+                        possibleMoves: []
+                    },
+                }
+                if (j % 2 == i % 2 == k % 2) {
+                    board[i][j][k].color = "white"
+                }
+                else {
+                    board[i][j][k].color = "black"
+                }
+                //#region Piece Allocation 
+                if (i == 0 && j == 4 && k == 4) {
+                    board[i][j][k].piece.img = "whiteRook"
+                }
+                else if (i == 1 && j == 4 && k == 4) {
+                    board[i][j][k].piece.img = "whiteKnight"
+                }
+                else if (i == 2 && j == 4 && k == 4) {
+                    board[i][j][k].piece.img = "whiteKing"
+                }
+                else if (i == 3 && j == 4 && k == 4) {
+                    board[i][j][k].piece.img = "whiteKnight"
+                }
+                else if (i == 4 && j == 4 && k == 4) {
+                    board[i][j][k].piece.img = "whiteRook"
+                } //
+                else if (i == 0 && j == 4 && k == 3) {
+                    board[i][j][k].piece.img = "whiteBishop"
+                }
+                else if (i == 1 && j == 4 && k == 3) {
+                    board[i][j][k].piece.img = "whiteKnight"
+                }
+                else if (i == 2 && j == 4 && k == 3) {
+                    board[i][j][k].piece.img = "whiteQueen"
+                }
+                else if (i == 3 && j == 4 && k == 3) {
+                    board[i][j][k].piece.img = "whiteBishop"
+                }
+                else if (i == 4 && j == 4 && k == 3) {
+                    board[i][j][k].piece.img = "whiteKnight"
+                }
+                else if (j == 3 && (k == 4 || k == 3)) {
+                    board[i][j][k].piece.img = "whitePawn"
+                } //------------
+                else if (i == 0 && j == 0 && k == 0) {
+                    board[i][j][k].piece.img = "blackRook"
+                }
+                else if (i == 1 && j == 0 && k == 0) {
+                    board[i][j][k].piece.img = "blackKnight"
+                }
+                else if (i == 2 && j == 0 && k == 0) {
+                    board[i][j][k].piece.img = "blackKing"
+                }
+                else if (i == 3 && j == 0 && k == 0) {
+                    board[i][j][k].piece.img = "blackKnight"
+                }
+                else if (i == 4 && j == 0 && k == 0) {
+                    board[i][j][k].piece.img = "blackRook"
+                } //
+                else if (i == 0 && j == 0 && k == 1) {
+                    board[i][j][k].piece.img = "blackBishop"
+                }
+                else if (i == 1 && j == 0 && k == 1) {
+                    board[i][j][k].piece.img = "blackKnight"
+                }
+                else if (i == 2 && j == 0 && k == 1) {
+                    board[i][j][k].piece.img = "blackQueen"
+                }
+                else if (i == 3 && j == 0 && k == 1) {
+                    board[i][j][k].piece.img = "blackBishop"
+                }
+                else if (i == 4 && j == 0 && k == 1) {
+                    board[i][j][k].piece.img = "blackKnight"
+                }
+                else if (j == 1 && (k == 0 || k == 1)) {
+                    board[i][j][k].piece.img = "blackPawn"
+                }
+                //#endregion
             }
         }
     }
@@ -78,40 +186,71 @@ function setup() {
 
 function draw() {
     background(50)
-    if (mouseX >= canvasOffsetW && mouseX <= (canvasOffsetW + tileSize * 4) && mouseY >= canvasOffsetH && mouseY <= (canvasOffsetH + tileSize * 4)) {
-        mousex = constrain(Math.floor((mouseX - canvasOffsetW) / tileSize), 0, 3)
-        mousey = constrain(Math.floor((mouseY - canvasOffsetH) / tileSize), 0, 3)
-    }
-    else {
-        mousex = undefined
-        mousey = undefined
-    }
     if (gameState != "Default") {
         connectButton.hide()
         hostButton.hide()
 
         // if (gameState == "StartGame") {
             // Drawing the chess board
-            for (let i = 0; i < board.length; i++) {
-                for (let j = 0; j < board[i].length; j++) {
-                    if (board[i][j].color == "white") {
-                        fill(240)
+            for (let k = 0; k < 5; k++) {
+                for (let i = 0; i < board.length; i++) {
+                    for (let j = 0; j < board[i].length; j++) {
+                        if (board[i][j][k].color == "white") {
+                            fill(232, 235, 239)
+                        }
+                        else if (board[i][j][k].color == "black") {
+                            fill(125, 135, 150)
+                        }
+                        stroke(127)
+                        rect(board[i][j][k].x * tileSize + canvasOffsetW, (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50, tileSize, tileSize)
+                        
+                        let expr = board[i][j][k].piece.img
+                        switch(expr) {
+                            case "whiteKing": canvas.drawingContext.drawImage(whiteKing, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                            case "whiteQueen": canvas.drawingContext.drawImage(whiteQueen, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                            case "whiteBishop": canvas.drawingContext.drawImage(whiteBishop, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                            case "whiteKnight": canvas.drawingContext.drawImage(whiteKnight, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                            case "whitePawn": canvas.drawingContext.drawImage(whitePawn, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                            case "whiteRook": canvas.drawingContext.drawImage(whiteRook, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+
+                            case "blackKing": canvas.drawingContext.drawImage(blackKing, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                            case "blackQueen": canvas.drawingContext.drawImage(blackQueen, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                            case "blackBishop": canvas.drawingContext.drawImage(blackBishop, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                            case "blackKnight": canvas.drawingContext.drawImage(blackKnight, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                            case "blackPawn": canvas.drawingContext.drawImage(blackPawn, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                            case "blackRook": canvas.drawingContext.drawImage(blackRook, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                        }
                     }
-                    else if (board[i][j].color == "black") {
-                        fill(30)
-                    }
-                    stroke(0)
-                    rect(board[i][j].x * tileSize + canvasOffsetW, board[i][j].y * tileSize + canvasOffsetH, tileSize, tileSize)
                 }
             }
-
-            // Hover Logic
-            if (mousex != undefined && mousey != undefined) {
-                noFill()
-                stroke(255, 204, 100)
-                strokeWeight(3)
-                rect(board[mousex][mousey].x * tileSize + canvasOffsetW, board[mousex][mousey].y * tileSize + canvasOffsetH, tileSize, tileSize)
-                strokeWeight(1)
+            //Hover Logic
+            for (let k = 0; k < 5; k++) {
+                for (let i = 0; i < board.length; i++) {
+                    for (let j = 0; j < board[i].length; j++) {
+                        if (mouseX >= board[i][j][k].x * tileSize + canvasOffsetW && mouseX <= board[i][j][k].x * tileSize + canvasOffsetW + tileSize) {
+                            if (mouseY >= (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50 && mouseY <= (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50 + tileSize) {
+                                noFill()
+                                stroke(255, 204, 100)
+                                strokeWeight(3)
+                                rect(board[i][j][k].x * tileSize + canvasOffsetW, (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50, tileSize, tileSize)
+                                strokeWeight(1)
+                                console.log(board[i][j][k].x, board[i][j][k].y, board[i][j][k].z)
+                            }
+                        }
+                    }   
+                }
             }
         // }
     }
@@ -134,14 +273,12 @@ function mouseDragged() {
     differenceY = mouseY - preMouseY
     canvasOffsetW = differenceX + initialOffesetX
     canvasOffsetH = differenceY + initialOffesetY
-    canvasOffsetW = constrain(canvasOffsetW,  -tileSize * 4 / 2, canvasW - tileSize * 4 / 2)
+    canvasOffsetW = constrain(canvasOffsetW,  -tileSize * 5 / 2, canvasW - tileSize * 5 / 2)
 }
 
 function mouseReleased() {
     lock = true
 }
-
-
 
 // PEER JS
 
