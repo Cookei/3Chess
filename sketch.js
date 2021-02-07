@@ -16,7 +16,7 @@ let myTurn = null
 let board = []
 let tileSize = 100
 let canvasOffsetW = (canvasW - tileSize * 5) / 2
-let canvasOffsetH = canvasH/10
+let canvasOffsetH = tileSize / 2
 
 let mousex, mousey
 let lock = true
@@ -25,8 +25,17 @@ let preMouseX, preMouseY, initalOffsetX, initialOffesetY
 let whiteKing, whiteQueen, whiteBishop, whiteKnight, whitePawn, whiteRook, blackKing, blackQueen, blackBishop, blackKnight, blackPawn, blackRook
 let canvas
 
+let preSelection
+
 function setup() {
     canvas = createCanvas(canvasW, canvasH)
+
+    if (myTurn == true) {
+        canvasOffsetH = -4 * tileSize * 4 - 4 * 50 - tileSize / 2
+    }
+    else {
+        canvasOffsetH = tileSize / 2
+    }
 
     //Host Button
     hostButton = createButton("Host")
@@ -101,9 +110,10 @@ function setup() {
                     y: j,
                     z: k,
                     piece: {
-                        img: "",
+                        img: null,
                         possibleMoves: []
                     },
+                    selected: false
                 }
                 if (j % 2 == i % 2 == k % 2) {
                     board[i][j][k].color = "white"
@@ -235,10 +245,11 @@ function draw() {
                     }
                 }
             }
-            //Hover Logic
+            
             for (let k = 0; k < 5; k++) {
                 for (let i = 0; i < board.length; i++) {
                     for (let j = 0; j < board[i].length; j++) {
+                        //Hover Logic
                         if (mouseX >= board[i][j][k].x * tileSize + canvasOffsetW && mouseX <= board[i][j][k].x * tileSize + canvasOffsetW + tileSize) {
                             if (mouseY >= (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50 && mouseY <= (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50 + tileSize) {
                                 noFill()
@@ -249,31 +260,69 @@ function draw() {
                                 console.log(board[i][j][k].x, board[i][j][k].y, board[i][j][k].z)
                             }
                         }
+                        //Selection logic
+                        if (board[i][j][k].selected == true) {
+                            noFill()
+                            stroke(240, 156, 91)
+                            strokeWeight(3)
+                            rect(board[i][j][k].x * tileSize + canvasOffsetW, (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50, tileSize, tileSize)
+                            strokeWeight(1)
+                        }
                     }   
                 }
             }
         // }
     }
     else {
-        
         connectButton.show()
         hostButton.show()
+    }
+}
+
+function mouseClicked() {
+    for (let k = 0; k < 5; k++) {
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                if (mouseX >= board[i][j][k].x * tileSize + canvasOffsetW && mouseX <= board[i][j][k].x * tileSize + canvasOffsetW + tileSize) {
+                    if (mouseY >= (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50 && mouseY <= (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50 + tileSize) {
+                        if (preSelection != undefined) {
+                            preSelection.selected = false
+                        }
+                        board[i][j][k].selected = true
+                        preSelection = board[i][j][k]
+                    }
+                }
+            }   
+        }
+    }
+}
+
+function mouseWheel() {
+    if (gameState != "Default") {
+        if (event.deltaY > 0) {
+            canvasOffsetH -= 95
+        }
+        else if (event.deltaY < 0 ) {
+            canvasOffsetH += 95
+        }
+        canvasOffsetH = constrain(canvasOffsetH, -4 * tileSize * 4 - 4 * 50 - tileSize / 2, tileSize / 2)
     }
 }
 
 function mouseDragged() {
     if (lock == true) {
         lock = false
-        preMouseX = mouseX
+        // preMouseX = mouseX
         preMouseY = mouseY
-        initialOffesetX = canvasOffsetW
+        // initialOffesetX = canvasOffsetW
         initialOffesetY = canvasOffsetH
     }
-    differenceX = mouseX - preMouseX
+    // differenceX = mouseX - preMouseX
     differenceY = mouseY - preMouseY
-    canvasOffsetW = differenceX + initialOffesetX
+    // canvasOffsetW = differenceX + initialOffesetX
     canvasOffsetH = differenceY + initialOffesetY
-    canvasOffsetW = constrain(canvasOffsetW,  -tileSize * 5 / 2, canvasW - tileSize * 5 / 2)
+    // canvasOffsetW = constrain(canvasOffsetW,  -tileSize * 5 / 2, canvasW - tileSize * 5 / 2)
+    canvasOffsetH = constrain(canvasOffsetH, -4 * tileSize * 4 - 4 * 50 - tileSize / 2, tileSize / 2)
 }
 
 function mouseReleased() {
