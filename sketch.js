@@ -258,7 +258,7 @@ function draw() {
                                 strokeWeight(3)
                                 rect(board[i][j][k].x * tileSize + canvasOffsetW, (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50, tileSize, tileSize)
                                 strokeWeight(1)
-                                console.log(board[i][j][k].x, board[i][j][k].y, board[i][j][k].z)
+                                // console.log(board[i][j][k].x, board[i][j][k].y, board[i][j][k].z)
                             }
                         }
                         //Selection logic
@@ -287,27 +287,32 @@ function draw() {
 }
 
 function mouseClicked() {
-    
+    if (gameState == "Default") return
+    if (myTurn == false) return
     for (let k = 0; k < 5; k++) {
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board[i].length; j++) {
                 //Selection Logic
                 if (mouseX >= board[i][j][k].x * tileSize + canvasOffsetW && mouseX <= board[i][j][k].x * tileSize + canvasOffsetW + tileSize) {
                     if (mouseY >= (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50 && mouseY <= (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50 + tileSize) {
+                        board[i][j][k].selected = true
                         if (preSelection != undefined) {
                             selectionSwitch = true
                             for (let a = 0; a < preSelection.piece.possibleMoves.length; a++) {
                                 if (i == preSelection.piece.possibleMoves[a][0] && j == preSelection.piece.possibleMoves[a][1] && k == preSelection.piece.possibleMoves[a][2]) {
                                     board[i][j][k].piece.img = preSelection.piece.img
                                     preSelection.piece.img = null
+                                    board[i][j][k].selected = false
                                     preSelection.piece.possibleMoves = []
                                 }
                             }
-                            preSelection.selected = false
+                            if (preSelection != board[i][j][k]) {
+                                preSelection.selected = false
+                            }
                             preSelection.piece.possibleMoves = []
                         }
-                        board[i][j][k].selected = true
                         preSelection = board[i][j][k]
+
                         if (preSelection.piece.img != null && selectionSwitch == true) {
                             switch (preSelection.piece.img) {
                                 case "whitePawn":
