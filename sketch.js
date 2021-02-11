@@ -155,6 +155,7 @@ function setup() {
                 }
                 else if (j == 3 && (k == 4 || k == 3)) {
                     board[i][j][k].piece.img = "whitePawn"
+                    board[i][j][k].firstMove = false
                 } //------------
                 else if (i == 0 && j == 0 && k == 0) {
                     board[i][j][k].piece.img = "blackRook"
@@ -188,6 +189,7 @@ function setup() {
                 }
                 else if (j == 1 && (k == 0 || k == 1)) {
                     board[i][j][k].piece.img = "blackPawn"
+                    board[i][j][k].firstMove = false
                 }
                 //#endregion
             }
@@ -318,8 +320,9 @@ function mouseClicked() {
                                 case "whitePawn":
                                     selectionSwitch = false
                                     let max
-                                    if ((k == 4 || k == 3) && j == 3) {
+                                    if (preSelection.firstMove == false) {
                                         max = 2
+                                        preSelection.firstMove = true
                                     }
                                     else {
                                         max = 1
