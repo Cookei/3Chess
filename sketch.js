@@ -22,7 +22,7 @@ let mousex, mousey
 let lock = true
 let preMouseX, preMouseY, initalOffsetX, initialOffesetY
 
-let whiteKing, whiteQueen, whiteBishop, whiteKnight, whitePawn, whiteRook, blackKing, blackQueen, blackBishop, blackKnight, blackPawn, blackRook
+let whiteKing, whiteQueen, whiteBishop, whiteKnight, whitePawn, whiteRook, whiteUnicorn, blackKing, blackQueen, blackBishop, blackKnight, blackPawn, blackRook, blackUnicorn
 let canvas
 
 let preSelection
@@ -84,6 +84,8 @@ function setup() {
     whitePawn.src = "img/white/pawn.png"
     whiteRook = new Image()
     whiteRook.src = "img/white/rook.png"
+    whiteUnicorn = new Image()
+    whiteUnicorn.src = "img/white/unicorn.png"
 
     blackKing = new Image()
     blackKing.src = "img/black/king.png"
@@ -97,6 +99,8 @@ function setup() {
     blackPawn.src = "img/black/pawn.png"
     blackRook = new Image()
     blackRook.src = "img/black/rook.png"
+    blackUnicorn = new Image()
+    blackUnicorn.src = "img/black/unicorn.png"
     //#endregion
 
     //Board creation
@@ -149,7 +153,7 @@ function setup() {
                     board[i][j][k].piece.color = "white"
                 }
                 else if (i == 1 && j == 4 && k == 3) {
-                    board[i][j][k].piece.img = "whiteKnight"
+                    board[i][j][k].piece.img = "whiteUnicorn"
                     board[i][j][k].piece.color = "white"
                 }
                 else if (i == 2 && j == 4 && k == 3) {
@@ -161,7 +165,7 @@ function setup() {
                     board[i][j][k].piece.color = "white"
                 }
                 else if (i == 4 && j == 4 && k == 3) {
-                    board[i][j][k].piece.img = "whiteKnight"
+                    board[i][j][k].piece.img = "whiteUnicorn"
                     board[i][j][k].piece.color = "white"
                 }
                 else if (j == 3 && (k == 4 || k == 3)) {
@@ -194,7 +198,7 @@ function setup() {
                     board[i][j][k].piece.color = "black"
                 }
                 else if (i == 1 && j == 0 && k == 1) {
-                    board[i][j][k].piece.img = "blackKnight"
+                    board[i][j][k].piece.img = "blackUnicorn"
                     board[i][j][k].piece.color = "black"
                 }
                 else if (i == 2 && j == 0 && k == 1) {
@@ -206,7 +210,7 @@ function setup() {
                     board[i][j][k].piece.color = "black"
                 }
                 else if (i == 4 && j == 0 && k == 1) {
-                    board[i][j][k].piece.img = "blackKnight"
+                    board[i][j][k].piece.img = "blackUnicorn"
                     board[i][j][k].piece.color = "black"
                 }
                 else if (j == 1 && (k == 0 || k == 1)) {
@@ -254,6 +258,8 @@ function draw() {
                             break
                             case "whiteRook": canvas.drawingContext.drawImage(whiteRook, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
                             break
+                            case "whiteUnicorn": canvas.drawingContext.drawImage(whiteUnicorn, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
 
                             case "blackKing": canvas.drawingContext.drawImage(blackKing, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
                             break
@@ -266,6 +272,8 @@ function draw() {
                             case "blackPawn": canvas.drawingContext.drawImage(blackPawn, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
                             break
                             case "blackRook": canvas.drawingContext.drawImage(blackRook, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                            case "blackUnicorn": canvas.drawingContext.drawImage(blackUnicorn, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
                             break
                         }
                         fill(0)
@@ -351,7 +359,8 @@ function mouseClicked() {
                                     selectionSwitch = false
                                     let max
                                     
-                                    preSelection.firstMove == false ? max = 2 : max = 1
+                                    // preSelection.firstMove == false ? max = 2 : max = 1
+                                    max = 1
                                     let findPiece = function(a, b) {
                                         if (a < max) {
                                             if (j - a - 1 >= 0) {
