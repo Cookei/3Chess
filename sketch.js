@@ -112,7 +112,6 @@ function setup() {
                     z: k,
                     piece: {
                         img: null,
-                        color: null,
                         possibleMoves: []
                     },
                     selected: false
@@ -126,92 +125,70 @@ function setup() {
                 //#region Piece Allocation 
                 if (i == 0 && j == 4 && k == 4) {
                     board[i][j][k].piece.img = "whiteRook"
-                    board[i][j][k].piece.color = "white"
                 }
                 else if (i == 1 && j == 4 && k == 4) {
                     board[i][j][k].piece.img = "whiteKnight"
-                    board[i][j][k].piece.color = "white"
                 }
                 else if (i == 2 && j == 4 && k == 4) {
                     board[i][j][k].piece.img = "whiteKing"
-                    board[i][j][k].piece.color = "white"
                 }
                 else if (i == 3 && j == 4 && k == 4) {
                     board[i][j][k].piece.img = "whiteKnight"
-                    board[i][j][k].piece.color = "white"
                 }
                 else if (i == 4 && j == 4 && k == 4) {
                     board[i][j][k].piece.img = "whiteRook"
-                    board[i][j][k].piece.color = "white"
                 } //
                 else if (i == 0 && j == 4 && k == 3) {
                     board[i][j][k].piece.img = "whiteBishop"
-                    board[i][j][k].piece.color = "white"
                 }
                 else if (i == 1 && j == 4 && k == 3) {
                     board[i][j][k].piece.img = "whiteKnight"
-                    board[i][j][k].piece.color = "white"
                 }
                 else if (i == 2 && j == 4 && k == 3) {
                     board[i][j][k].piece.img = "whiteQueen"
-                    board[i][j][k].piece.color = "white"
                 }
                 else if (i == 3 && j == 4 && k == 3) {
                     board[i][j][k].piece.img = "whiteBishop"
-                    board[i][j][k].piece.color = "white"
                 }
                 else if (i == 4 && j == 4 && k == 3) {
                     board[i][j][k].piece.img = "whiteKnight"
-                    board[i][j][k].piece.color = "white"
                 }
                 else if (j == 3 && (k == 4 || k == 3)) {
                     board[i][j][k].piece.img = "whitePawn"
-                    board[i][j][k].piece.color = "white"
                     board[i][j][k].firstMove = false
                 } //------------
                 else if (i == 0 && j == 0 && k == 0) {
                     board[i][j][k].piece.img = "blackRook"
-                    board[i][j][k].piece.color = "black"
                 }
                 else if (i == 1 && j == 0 && k == 0) {
                     board[i][j][k].piece.img = "blackKnight"
-                    board[i][j][k].piece.color = "black"
                 }
                 else if (i == 2 && j == 0 && k == 0) {
                     board[i][j][k].piece.img = "blackKing"
-                    board[i][j][k].piece.color = "black"
                 }
                 else if (i == 3 && j == 0 && k == 0) {
                     board[i][j][k].piece.img = "blackKnight"
-                    board[i][j][k].piece.color = "black"
                 }
                 else if (i == 4 && j == 0 && k == 0) {
                     board[i][j][k].piece.img = "blackRook"
-                    board[i][j][k].piece.color = "black"
                 } //
                 else if (i == 0 && j == 0 && k == 1) {
                     board[i][j][k].piece.img = "blackBishop"
-                    board[i][j][k].piece.color = "black"
                 }
                 else if (i == 1 && j == 0 && k == 1) {
                     board[i][j][k].piece.img = "blackKnight"
-                    board[i][j][k].piece.color = "black"
                 }
                 else if (i == 2 && j == 0 && k == 1) {
                     board[i][j][k].piece.img = "blackQueen"
-                    board[i][j][k].piece.color = "black"
                 }
                 else if (i == 3 && j == 0 && k == 1) {
                     board[i][j][k].piece.img = "blackBishop"
-                    board[i][j][k].piece.color = "black"
                 }
                 else if (i == 4 && j == 0 && k == 1) {
                     board[i][j][k].piece.img = "blackKnight"
-                    board[i][j][k].piece.color = "black"
                 }
                 else if (j == 1 && (k == 0 || k == 1)) {
                     board[i][j][k].piece.img = "blackPawn"
-                    board[i][j][k].piece.color = "black"
                     board[i][j][k].firstMove = false
                 }
                 //#endregion
@@ -268,8 +245,6 @@ function draw() {
                             case "blackRook": canvas.drawingContext.drawImage(blackRook, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
                             break
                         }
-                        fill(0)
-                        text(i + "," + j + "," + k, + i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize)
                     }
                 }
             }
@@ -285,6 +260,7 @@ function draw() {
                                 strokeWeight(3)
                                 rect(board[i][j][k].x * tileSize + canvasOffsetW, (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50, tileSize, tileSize)
                                 strokeWeight(1)
+                                // console.log(board[i][j][k].x, board[i][j][k].y, board[i][j][k].z)
                             }
                         }
                         //Selection logic
@@ -328,12 +304,7 @@ function mouseClicked() {
                                 if (i == preSelection.piece.possibleMoves[a][0] && j == preSelection.piece.possibleMoves[a][1] && k == preSelection.piece.possibleMoves[a][2]) {
                                     board[i][j][k].piece.img = preSelection.piece.img
                                     preSelection.piece.img = null
-                                    board[i][j][k].piece.color = preSelection.piece.color
-                                    preSelection.piece.color = null
                                     board[i][j][k].selected = false
-                                    if (preSelection.piece.firstMove != undefined) {
-                                        preSelection.firstMove = true
-                                    }
                                     preSelection.piece.possibleMoves = []
                                 }
                             }
@@ -342,7 +313,6 @@ function mouseClicked() {
                             }
                             preSelection.piece.possibleMoves = []
                         }
-
                         preSelection = board[i][j][k]
 
                         if (preSelection.piece.img != null && selectionSwitch == true) {
@@ -350,12 +320,18 @@ function mouseClicked() {
                                 case "whitePawn":
                                     selectionSwitch = false
                                     let max
-                                    
-                                    preSelection.firstMove == false ? max = 2 : max = 1
+                                    if (preSelection.firstMove == false) {
+                                        max = 2
+                                        preSelection.firstMove = true
+                                    }
+                                    else {
+                                        max = 1
+                                    }
+
                                     let findPiece = function(a, b) {
                                         if (a < max) {
                                             if (j - a - 1 >= 0) {
-                                                if (board[i][j - a - 1][k].piece.color != preSelection.piece.color && board[i][j - a - 1][k].piece.color != "black") {
+                                                if (board[i][j - a - 1][k].piece.img == null) {
                                                     preSelection.piece.possibleMoves.push([i, j - a - 1, k])
                                                 }
                                             }
@@ -363,33 +339,11 @@ function mouseClicked() {
                                         }
                                         else if (b < max) {
                                             if (k - b - 1 >= 0) {
-                                                if (board[i][j][k - b - 1].piece.color != preSelection.piece.color && board[i][j][k - b - 1].piece.color != "black") {
+                                                if (board[i][j][k - b - 1].piece.img == null) {
                                                     preSelection.piece.possibleMoves.push([i, j, k - b - 1])
                                                 }
                                             }
                                             return findPiece(a, b + 1)
-                                        }
-                                        else {
-                                            if (i - 1 in board && j in board[i - 1] && k - 1 in board[i - 1][j]) {
-                                                if (board[i - 1][j][k - 1].piece.color != preSelection.piece.color && board[i - 1][j][k - 1].piece.color != null) {
-                                                    preSelection.piece.possibleMoves.push([i - 1, j, k - 1])
-                                                }
-                                            }
-                                            if (i + 1 in board && j in board[i + 1] && k - 1 in board[i + 1][j]) {
-                                                if (board[i + 1][j][k - 1].piece.color != preSelection.piece.color && board[i + 1][j][k - 1].piece.color != null) {
-                                                    preSelection.piece.possibleMoves.push([i + 1, j, k - 1])
-                                                }
-                                            }
-                                            if (i - 1 in board && j - 1 in board[i - 1] && k in board[i - 1][j - 1]) {
-                                                if (board[i - 1][j - 1][k].piece.color != preSelection.piece.color && board[i - 1][j - 1][k].piece.color != null) {
-                                                    preSelection.piece.possibleMoves.push([i - 1, j - 1, k])
-                                                }
-                                            }
-                                            if (i + 1 in board && j - 1 in board[i + 1] && k in board[i + 1][j - 1]) {
-                                                if (board[i + 1][j - 1][k].piece.color != preSelection.piece.color && board[i + 1][j - 1][k].piece.color != null) {
-                                                    preSelection.piece.possibleMoves.push([i + 1, j - 1, k])
-                                                }
-                                            }
                                         }
                                     }
                                     findPiece(0, 0)
@@ -402,7 +356,6 @@ function mouseClicked() {
         }
     }
 }
-
 
 function mouseWheel() {
     if (gameState != "Default") {
