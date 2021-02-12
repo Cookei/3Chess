@@ -22,11 +22,10 @@ let mousex, mousey
 let lock = true
 let preMouseX, preMouseY, initalOffsetX, initialOffesetY
 
-let whiteKing, whiteQueen, whiteBishop, whiteKnight, whitePawn, whiteRook, blackKing, blackQueen, blackBishop, blackKnight, blackPawn, blackRook
+let whiteKing, whiteQueen, whiteBishop, whiteKnight, whitePawn, whiteRook, whiteUnicorn, blackKing, blackQueen, blackBishop, blackKnight, blackPawn, blackRook, blackUnicorn
 let canvas
 
 let preSelection
-let selectionSwitch = true
 
 function setup() {
     canvas = createCanvas(canvasW, canvasH)
@@ -84,6 +83,8 @@ function setup() {
     whitePawn.src = "img/white/pawn.png"
     whiteRook = new Image()
     whiteRook.src = "img/white/rook.png"
+    whiteUnicorn = new Image()
+    whiteUnicorn.src = "img/white/unicorn.png"
 
     blackKing = new Image()
     blackKing.src = "img/black/king.png"
@@ -97,6 +98,8 @@ function setup() {
     blackPawn.src = "img/black/pawn.png"
     blackRook = new Image()
     blackRook.src = "img/black/rook.png"
+    blackUnicorn = new Image()
+    blackUnicorn.src = "img/black/unicorn.png"
     //#endregion
 
     //Board creation
@@ -149,7 +152,7 @@ function setup() {
                     board[i][j][k].piece.color = "white"
                 }
                 else if (i == 1 && j == 4 && k == 3) {
-                    board[i][j][k].piece.img = "whiteKnight"
+                    board[i][j][k].piece.img = "whiteUnicorn"
                     board[i][j][k].piece.color = "white"
                 }
                 else if (i == 2 && j == 4 && k == 3) {
@@ -161,7 +164,7 @@ function setup() {
                     board[i][j][k].piece.color = "white"
                 }
                 else if (i == 4 && j == 4 && k == 3) {
-                    board[i][j][k].piece.img = "whiteKnight"
+                    board[i][j][k].piece.img = "whiteUnicorn"
                     board[i][j][k].piece.color = "white"
                 }
                 else if (j == 3 && (k == 4 || k == 3)) {
@@ -194,7 +197,7 @@ function setup() {
                     board[i][j][k].piece.color = "black"
                 }
                 else if (i == 1 && j == 0 && k == 1) {
-                    board[i][j][k].piece.img = "blackKnight"
+                    board[i][j][k].piece.img = "blackUnicorn"
                     board[i][j][k].piece.color = "black"
                 }
                 else if (i == 2 && j == 0 && k == 1) {
@@ -206,7 +209,7 @@ function setup() {
                     board[i][j][k].piece.color = "black"
                 }
                 else if (i == 4 && j == 0 && k == 1) {
-                    board[i][j][k].piece.img = "blackKnight"
+                    board[i][j][k].piece.img = "blackUnicorn"
                     board[i][j][k].piece.color = "black"
                 }
                 else if (j == 1 && (k == 0 || k == 1)) {
@@ -254,6 +257,8 @@ function draw() {
                             break
                             case "whiteRook": canvas.drawingContext.drawImage(whiteRook, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
                             break
+                            case "whiteUnicorn": canvas.drawingContext.drawImage(whiteUnicorn, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
 
                             case "blackKing": canvas.drawingContext.drawImage(blackKing, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
                             break
@@ -266,6 +271,8 @@ function draw() {
                             case "blackPawn": canvas.drawingContext.drawImage(blackPawn, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
                             break
                             case "blackRook": canvas.drawingContext.drawImage(blackRook, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
+                            break
+                            case "blackUnicorn": canvas.drawingContext.drawImage(blackUnicorn, i * tileSize + canvasOffsetW, (j * tileSize + canvasOffsetH) + k * tileSize * 5 + k * 50, tileSize, tileSize)
                             break
                         }
                         fill(0)
@@ -323,7 +330,6 @@ function mouseClicked() {
                     if (mouseY >= (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50 && mouseY <= (board[i][j][k].y * tileSize + canvasOffsetH) + board[i][j][k].z * tileSize * 5 + board[i][j][k].z * 50 + tileSize) {
                         board[i][j][k].selected = true
                         if (preSelection != undefined) {
-                            selectionSwitch = true
                             for (let a = 0; a < preSelection.piece.possibleMoves.length; a++) {
                                 if (i == preSelection.piece.possibleMoves[a][0] && j == preSelection.piece.possibleMoves[a][1] && k == preSelection.piece.possibleMoves[a][2]) {
                                     board[i][j][k].piece.img = preSelection.piece.img
@@ -345,21 +351,21 @@ function mouseClicked() {
 
                         preSelection = board[i][j][k]
 
-                        if (preSelection.piece.img != null && selectionSwitch == true) {
+                        if (preSelection.piece.img != null) {
                             switch (preSelection.piece.img) {
                                 case "whitePawn":
-                                    selectionSwitch = false
                                     let max
                                     
-                                    preSelection.firstMove == false ? max = 2 : max = 1
-                                    let findPiece = function(a, b) {
+                                    // preSelection.firstMove == false ? max = 2 : max = 1
+                                    max = 1
+                                    let findPieceWhitePawn = function(a, b) {
                                         if (a < max) {
                                             if (j - a - 1 >= 0) {
                                                 if (board[i][j - a - 1][k].piece.color != preSelection.piece.color && board[i][j - a - 1][k].piece.color != "black") {
                                                     preSelection.piece.possibleMoves.push([i, j - a - 1, k])
                                                 }
                                             }
-                                            return findPiece(a + 1, b)
+                                            return findPieceWhitePawn(a + 1, b)
                                         }
                                         else if (b < max) {
                                             if (k - b - 1 >= 0) {
@@ -367,7 +373,7 @@ function mouseClicked() {
                                                     preSelection.piece.possibleMoves.push([i, j, k - b - 1])
                                                 }
                                             }
-                                            return findPiece(a, b + 1)
+                                            return findPieceWhitePawn(a, b + 1)
                                         }
                                         else {
                                             if (i - 1 in board && j in board[i - 1] && k - 1 in board[i - 1][j]) {
@@ -392,7 +398,12 @@ function mouseClicked() {
                                             }
                                         }
                                     }
-                                    findPiece(0, 0)
+                                    findPieceWhitePawn(0, 0)
+                                break
+                                case "whiteRook":
+                                    let findPieceWhiteRook = function() {
+
+                                    }
                                 break
                             }
                         }
