@@ -559,11 +559,199 @@ function mouseClicked() {
                                     }
                                 }
                             }
+                            let checkFowardUptoBackwardDown = function(dir, over) {
+                                for (let y = j + dir * 1, z = k + dir * 1; y <= board.length && z <= board.length; y += dir * 1, z += dir * 1) {
+                                    if (board[i][y] == undefined || board[i][y][z] == undefined) {
+                                        if (over == true) return
+                                        checkFowardUptoBackwardDown(-1, true)
+                                        break
+                                    }
+                                    else if (board[i][y][z].piece.color != preSelection.piece.color) {
+                                        if (board[i][y][z].piece.color == null) {
+                                            preSelection.piece.possibleMoves.push([i, y, z])
+                                        }
+                                        else {
+                                            preSelection.piece.possibleMoves.push([i, y, z])
+                                            if (over == true) return
+                                            checkFowardUptoBackwardDown(-1, true)
+                                            break
+                                        }
+                                    }
+                                    else {
+                                        if (over == true) return
+                                        checkFowardUptoBackwardDown(-1, true)
+                                        break
+                                    }
+                                }
+                            }
+                            let checkFowardDowntoBackwardUp = function(dir, over) {
+                                for (let y = j + -dir * 1, z = k + dir * 1; y >= -1 && z >= -1; y += -dir * 1, z += dir * 1) {
+                                    if (board[i][y] == undefined || board[i][y][z] == undefined) {
+                                        if (over == true) return
+                                        checkFowardDowntoBackwardUp(-1, true)
+                                        break
+                                    }
+                                    else if (board[i][y][z].piece.color != preSelection.piece.color) {
+                                        if (board[i][y][z].piece.color == null) {
+                                            preSelection.piece.possibleMoves.push([i, y, z])
+                                        }
+                                        else {
+                                            preSelection.piece.possibleMoves.push([i, y, z])
+                                            if (over == true) return
+                                            checkFowardDowntoBackwardUp(-1, true)
+                                            break
+                                        }
+                                    }
+                                    else {
+                                        if (over == true) return
+                                        checkFowardDowntoBackwardUp(-1, true)
+                                        break
+                                    }
+                                }
+                            }
                             checkDiagBottomRighttoUpperLeft(1, false)
                             checkDiagBottomLefttoUpperRight(1, false)
                             checkDiagSuperBottomLefttoSuperUpperRight(1, false)
                             checkDiagSuperBottomRighttoSuperUpperLeft(1, false)
+                            checkFowardUptoBackwardDown(1, false)
+                            checkFowardDowntoBackwardUp(1, false)
                         }
+                        let findPieceWhiteUnicorn = function() {
+                            let checkUpperLefttoLowerRight = function(dir, over) {
+                                for (let x = i + dir * 1, y = j + dir * 1, z = k + dir * 1; x <= board.length && y <= board.length && z <= board.length; x += dir * 1, y += dir * 1, z += dir * 1) {
+                                    if (board[x] == undefined || board[x][y] == undefined || board[x][y][z] == undefined) {
+                                        if (over == true) return
+                                        checkUpperLefttoLowerRight(-1, true)
+                                        break
+                                    }
+                                    else if (board[x][y][z].piece.color != preSelection.piece.color) {
+                                        if (board[x][y][z].piece.color == null) {
+                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                        }
+                                        else {
+                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                            if (over == true) return
+                                            checkUpperLefttoLowerRight(-1, true)
+                                            break
+                                        }
+                                    }
+                                    else {
+                                        if (over == true) return
+                                        checkUpperLefttoLowerRight(-1, true)
+                                        break
+                                    }
+                                }
+                            }
+                            let checkUpperRighttoLowerLeft = function(dir, over) {
+                                for (let x = i + dir * 1, y = j + -dir * 1, z = k + -dir * 1; x >= -1 && y >= -1 && z >= -1; x += dir * 1, y += -dir * 1, z += -dir * 1) {
+                                    if (board[x] == undefined || board[x][y] == undefined || board[x][y][z] == undefined) {
+                                        if (over == true) return
+                                        checkUpperRighttoLowerLeft(-1, true)
+                                        break
+                                    }
+                                    else if (board[x][y][z].piece.color != preSelection.piece.color) {
+                                        if (board[x][y][z].piece.color == null) {
+                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                        }
+                                        else {
+                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                            if (over == true) return
+                                            checkUpperRighttoLowerLeft(-1, true)
+                                            break
+                                        }
+                                    }
+                                    else {
+                                        if (over == true) return
+                                        checkUpperRighttoLowerLeft(-1, true)
+                                        break
+                                    }
+                                }
+                            }
+                            let checkForwardRighttoBackwardLeft = function(dir, over) {
+                                for (let x = i + dir * 1, y = j + -dir * 1, z = k + dir * 1; x >= -1 && y >= -1 && z >= -1; x += dir * 1, y += -dir * 1, z += dir * 1) {
+                                    if (board[x] == undefined || board[x][y] == undefined || board[x][y][z] == undefined) {
+                                        if (over == true) return
+                                        checkForwardRighttoBackwardLeft(-1, true)
+                                        break
+                                    }
+                                    else if (board[x][y][z].piece.color != preSelection.piece.color) {
+                                        if (board[x][y][z].piece.color == null) {
+                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                        }
+                                        else {
+                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                            if (over == true) return
+                                            checkForwardRighttoBackwardLeft(-1, true)
+                                            break
+                                        }
+                                    }
+                                    else {
+                                        if (over == true) return
+                                        checkForwardRighttoBackwardLeft(-1, true)
+                                        break
+                                    }
+                                }
+                            }
+                            let checkForwardLefttoBackwardRight = function(dir, over) {
+                                for (let x = i + dir * 1, y = j + dir * 1, z = k + -dir * 1; x <= board.length && y <= board.length && z <= board.length; x += dir * 1, y += dir * 1, z += -dir * 1) {
+                                    if (board[x] == undefined || board[x][y] == undefined || board[x][y][z] == undefined) {
+                                        if (over == true) return
+                                        checkForwardLefttoBackwardRight(-1, true)
+                                        break
+                                    }
+                                    else if (board[x][y][z].piece.color != preSelection.piece.color) {
+                                        if (board[x][y][z].piece.color == null) {
+                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                        }
+                                        else {
+                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                            if (over == true) return
+                                            checkForwardLefttoBackwardRight(-1, true)
+                                            break
+                                        }
+                                    }
+                                    else {
+                                        if (over == true) return
+                                        checkForwardLefttoBackwardRight(-1, true)
+                                        break
+                                    }
+                                }
+                            }
+                            checkUpperLefttoLowerRight(1, false)
+                            checkUpperRighttoLowerLeft(1, false)
+                            checkForwardRighttoBackwardLeft(1, false)
+                            checkForwardLefttoBackwardRight(1, false)
+                        }
+                        let findPieceWhiteQueen = function() {
+                            findPieceWhiteUnicorn()
+                            findPieceWhiteBishop()
+                            findPieceWhiteRook()
+                        }
+                        let findPieceWhiteKing = function() {
+                            let checkSquare = function(dir) {
+                                if (dir < -1) {
+                                    return
+                                }
+                                for (let x = i - 1; x <= i + 1; x++) {
+                                    for (let y = j - 1; y <= j + 1; y++) {
+                                        if (board[x] != undefined && board[x][y] != undefined && board[x][y][k + dir] != undefined) {
+                                            if (board[x][y][k + dir].piece.color != preSelection.piece.color) {
+                                                if (board[x][y][k + dir].piece.color == null) {
+                                                    preSelection.piece.possibleMoves.push([x, y, k + dir])
+                                                }
+                                                else {
+                                                    preSelection.piece.possibleMoves.push([x, y, k + dir])
+                                                    continue
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                checkSquare(dir - 1)
+                            }
+                            checkSquare(1)
+                        }
+                        
                         if (preSelection.piece.img != null) {
                             switch (preSelection.piece.img) {
                                 case "whitePawn":
@@ -618,6 +806,15 @@ function mouseClicked() {
                                 break
                                 case "whiteBishop":
                                     findPieceWhiteBishop()
+                                break
+                                case "whiteUnicorn":
+                                    findPieceWhiteUnicorn()
+                                break
+                                case "whiteQueen":
+                                    findPieceWhiteQueen()
+                                break
+                                case "whiteKing":
+                                    findPieceWhiteKing()
                                 break
                             }
                         }
