@@ -751,6 +751,77 @@ function mouseClicked() {
                             }
                             checkSquare(1)
                         }
+                        let findPieceWhiteKnight = function() {
+                            let upBottomHalf = function(dir, over) {
+                                for (let x = -2; x <= 2; x++) {
+                                    if (x == 0) {
+                                        continue
+                                    }
+                                    let y = -1/3 * Math.pow(x, 2) + 2 + 1/3
+                                    if (board[i + x] != undefined && board[i + x][j + dir * y] != undefined && board[i + x][j + dir * y][k] != undefined) {
+                                        if (board[i + x][j + dir * y][k].piece.color != preSelection.piece.color) {
+                                            if (board[i + x][j + dir * y][k].piece.color == null) {
+                                                preSelection.piece.possibleMoves.push([i + x, j + dir * y, k])
+                                            }
+                                            else {
+                                                preSelection.piece.possibleMoves.push([i + x, j + dir * y, k])
+                                            }
+                                        }
+                                    }
+                                }
+                                if (over == true) {
+                                    return
+                                }
+                                upBottomHalf(-1, true)
+                            }
+                            let topHorizDownHalf = function(dir, over) {
+                                for (let x = -2; x <= 2; x++) {
+                                    if (x == 0) {
+                                        continue
+                                    }
+                                    let y = -1/3 * Math.pow(x, 2) + 2 + 1/3
+                                    if (board[i + x] != undefined && board[i + x][j] != undefined && board[i + x][j][k + dir * y] != undefined) {
+                                        if (board[i + x][j][k + dir * y].piece.color != preSelection.piece.color) {
+                                            if (board[i + x][j][k + dir * y].piece.color == null) {
+                                                preSelection.piece.possibleMoves.push([i + x, j, k + dir * y])
+                                            }
+                                            else {
+                                                preSelection.piece.possibleMoves.push([i + x, j, k + dir * y])
+                                            }
+                                        }
+                                    }
+                                }
+                                if (over == true) {
+                                    return
+                                }
+                                topHorizDownHalf(-1, true)
+                            }
+                            let topVertiDownHalf = function(dir, over) {
+                                for (let x = -2; x <= 2; x++) {
+                                    if (x == 0) {
+                                        continue
+                                    }
+                                    let y = -1/3 * Math.pow(x, 2) + 2 + 1/3
+                                    if (board[i] != undefined && board[i][j + x] != undefined && board[i][j + x][k + dir * y] != undefined) {
+                                        if (board[i][j + x][k + dir * y].piece.color != preSelection.piece.color) {
+                                            if (board[i][j + x][k + dir * y].piece.color == null) {
+                                                preSelection.piece.possibleMoves.push([i, j + x, k + dir * y])
+                                            }
+                                            else {
+                                                preSelection.piece.possibleMoves.push([i, j + x, k + dir * y])
+                                            }
+                                        }
+                                    }
+                                }
+                                if (over == true) {
+                                    return
+                                }
+                                topVertiDownHalf(-1, true)
+                            }
+                            upBottomHalf(1, false)
+                            topHorizDownHalf(1, false)
+                            topVertiDownHalf(1, false)
+                        }
                         
                         if (preSelection.piece.img != null) {
                             switch (preSelection.piece.img) {
@@ -815,6 +886,9 @@ function mouseClicked() {
                                 break
                                 case "whiteKing":
                                     findPieceWhiteKing()
+                                break
+                                case "whiteKnight":
+                                    findPieceWhiteKnight()
                                 break
                             }
                         }
