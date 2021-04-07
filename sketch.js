@@ -354,7 +354,7 @@ function mouseClicked() {
                         preSelection = board[i][j][k]
 
                         //functions
-                        let findPieceWhiteRook = function() {
+                        let findPieceRook = function() {
                             for (let y = j + 1; y < board.length; y++) { //Check down
                                 if (board[i][y][k] == undefined) {
                                     break
@@ -458,7 +458,7 @@ function mouseClicked() {
                                 }
                             }
                         }
-                        let findPieceWhiteBishop = function() {
+                        let findPieceBishop = function() {
                             let checkDiagBottomRighttoUpperLeft = function(dir, over) {
                                 for (let x = i + dir * 1, y = j + dir * 1; x <= board.length && y <= board.length; x += dir * 1, y += dir * 1) {
                                     if (board[x] == undefined || board[x][y] == undefined) {
@@ -616,7 +616,7 @@ function mouseClicked() {
                             checkFowardUptoBackwardDown(1, false)
                             checkFowardDowntoBackwardUp(1, false)
                         }
-                        let findPieceWhiteUnicorn = function() {
+                        let findPieceUnicorn = function() {
                             let checkUpperLefttoLowerRight = function(dir, over) {
                                 for (let x = i + dir * 1, y = j + dir * 1, z = k + dir * 1; x <= board.length && y <= board.length && z <= board.length; x += dir * 1, y += dir * 1, z += dir * 1) {
                                     if (board[x] == undefined || board[x][y] == undefined || board[x][y][z] == undefined) {
@@ -722,12 +722,12 @@ function mouseClicked() {
                             checkForwardRighttoBackwardLeft(1, false)
                             checkForwardLefttoBackwardRight(1, false)
                         }
-                        let findPieceWhiteQueen = function() {
-                            findPieceWhiteUnicorn()
-                            findPieceWhiteBishop()
-                            findPieceWhiteRook()
+                        let findPieceQueen = function() {
+                            findPieceUnicorn()
+                            findPieceBishop()
+                            findPieceRook()
                         }
-                        let findPieceWhiteKing = function() {
+                        let findPieceKing = function() {
                             let checkSquare = function(dir) {
                                 if (dir < -1) {
                                     return
@@ -751,7 +751,7 @@ function mouseClicked() {
                             }
                             checkSquare(1)
                         }
-                        let findPieceWhiteKnight = function() {
+                        let findPieceKnight = function() {
                             let upBottomHalf = function(dir, over) {
                                 for (let x = -2; x <= 2; x++) {
                                     if (x == 0) {
@@ -822,73 +822,83 @@ function mouseClicked() {
                             topHorizDownHalf(1, false)
                             topVertiDownHalf(1, false)
                         }
+                        let findPiecePawn = function(dir) {
+                            for (let x = i - 1, y = j; x <= i + 1; x++) {
+                                if (x == i) {
+                                    y = j + dir
+                                }
+                                else {
+                                    y = j
+                                }
+                                if (board[x] != undefined && board[x][y] != undefined && board[x][y][k + dir] != undefined) {
+                                    if (board[x][y][k + dir].piece.color != preSelection.piece.color && board[x][y][k + dir].piece.color != null) {
+                                        preSelection.piece.possibleMoves.push([x, y, k + dir])
+                                    }
+                                }
+                                if (board[x] != undefined && board[x][j + dir] != undefined && board[x][j + dir][k] != undefined) {
+                                    if (board[x][j + dir][k].piece.color != preSelection.piece.color) {
+                                        if (board[x][j + dir][k].piece.color == null) {
+                                            if (x != i - 1 && x != i + 1) {
+                                                console.log(1)
+                                                preSelection.piece.possibleMoves.push([x, j + dir, k])
+                                            }
+                                        }
+                                        else if (x != i) {
+                                            preSelection.piece.possibleMoves.push([x, j + dir, k])
+                                        }
+                                    }
+                                }
+                            }
+                            if (board[i][j][k + dir] != undefined) {
+                                if (board[i][j][k + dir].piece.color != preSelection.piece.color && board[i][j][k + dir].piece.color == null) {
+                                    preSelection.piece.possibleMoves.push([i, j, k + dir])
+                                }
+                            }
+                        }
                         
                         if (preSelection.piece.img != null) {
                             switch (preSelection.piece.img) {
                                 case "whitePawn":
-                                    let max
-                                    
-                                    // preSelection.firstMove == false ? max = 2 : max = 1
-                                    max = 1
-                                    let findPieceWhitePawn = function(a, b) {
-                                        if (a < max) {
-                                            if (j - a - 1 >= 0) {
-                                                if (board[i][j - a - 1][k].piece.color != preSelection.piece.color && board[i][j - a - 1][k].piece.color != "black") {
-                                                    preSelection.piece.possibleMoves.push([i, j - a - 1, k])
-                                                }
-                                            }
-                                            return findPieceWhitePawn(a + 1, b)
-                                        }
-                                        else if (b < max) {
-                                            if (k - b - 1 >= 0) {
-                                                if (board[i][j][k - b - 1].piece.color != preSelection.piece.color && board[i][j][k - b - 1].piece.color != "black") {
-                                                    preSelection.piece.possibleMoves.push([i, j, k - b - 1])
-                                                }
-                                            }
-                                            return findPieceWhitePawn(a, b + 1)
-                                        }
-                                        else {
-                                            if (i - 1 in board && j in board[i - 1] && k - 1 in board[i - 1][j]) {
-                                                if (board[i - 1][j][k - 1].piece.color != preSelection.piece.color && board[i - 1][j][k - 1].piece.color != null) {
-                                                    preSelection.piece.possibleMoves.push([i - 1, j, k - 1])
-                                                }
-                                            }
-                                            if (i + 1 in board && j in board[i + 1] && k - 1 in board[i + 1][j]) {
-                                                if (board[i + 1][j][k - 1].piece.color != preSelection.piece.color && board[i + 1][j][k - 1].piece.color != null) {
-                                                    preSelection.piece.possibleMoves.push([i + 1, j, k - 1])
-                                                }
-                                            }
-                                            if (i - 1 in board && j - 1 in board[i - 1] && k in board[i - 1][j - 1]) {
-                                                if (board[i - 1][j - 1][k].piece.color != preSelection.piece.color && board[i - 1][j - 1][k].piece.color != null) {
-                                                    preSelection.piece.possibleMoves.push([i - 1, j - 1, k])
-                                                }
-                                            }
-                                            if (i + 1 in board && j - 1 in board[i + 1] && k in board[i + 1][j - 1]) {
-                                                if (board[i + 1][j - 1][k].piece.color != preSelection.piece.color && board[i + 1][j - 1][k].piece.color != null) {
-                                                    preSelection.piece.possibleMoves.push([i + 1, j - 1, k])
-                                                }
-                                            }
-                                        }
-                                    }
-                                    findPieceWhitePawn(0, 0)
+                                    findPiecePawn(-1)
                                 break
                                 case "whiteRook":
-                                    findPieceWhiteRook()
+                                    findPieceRook()
                                 break
                                 case "whiteBishop":
-                                    findPieceWhiteBishop()
+                                    findPieceBishop()
                                 break
                                 case "whiteUnicorn":
-                                    findPieceWhiteUnicorn()
+                                    findPieceUnicorn()
                                 break
                                 case "whiteQueen":
-                                    findPieceWhiteQueen()
+                                    findPieceQueen()
                                 break
                                 case "whiteKing":
-                                    findPieceWhiteKing()
+                                    findPieceKing()
                                 break
-                                case "whiteKnight":
-                                    findPieceWhiteKnight()
+                                case "blackPawn":
+                                    findPiecePawn(1)
+                                break
+                                case "blackKnight":
+                                    findPieceKnight()
+                                break
+                                case "blackRook":
+                                    findPieceRook()
+                                break
+                                case "blackBishop":
+                                    findPieceBishop()
+                                break
+                                case "blackUnicorn":
+                                    findPieceUnicorn()
+                                break
+                                case "blackQueen":
+                                    findPieceQueen()
+                                break
+                                case "blackKing":
+                                    findPieceKing()
+                                break
+                                case "blackKnight":
+                                    findPieceKnight()
                                 break
                             }
                         }
