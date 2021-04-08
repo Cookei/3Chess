@@ -27,6 +27,9 @@ let canvas
 
 let preSelection
 
+let promotionRadio, promotionConfirmButton
+let confirming = false
+
 function setup() {
     canvas = createCanvas(canvasW, canvasH)
 
@@ -221,6 +224,22 @@ function setup() {
             }
         }
     }
+
+    promotionRadio = createRadio()
+    promotionRadio.option('Rook')
+    promotionRadio.option('Unicorn')
+    promotionRadio.option('Bishop')
+    promotionRadio.option('Knight')
+    promotionRadio.option('Queen')
+    promotionRadio.position(canvasW + 50, 50)
+    promotionRadio.selected('Queen')
+    
+    promotionConfirmButton = createButton("Confirm")
+    promotionConfirmButton.position(promotionRadio.position().x, promotionRadio.position().y + 30)
+    promotionConfirmButton.mousePressed(promote)
+
+    promotionRadio.hide()
+    promotionConfirmButton.hide()
 }
 
 function draw() {
@@ -283,6 +302,7 @@ function draw() {
                 }
             }
             
+            if (confirming == true) return
             for (let k = 0; k < 5; k++) {
                 for (let i = 0; i < board.length; i++) {
                     for (let j = 0; j < board[i].length; j++) {
@@ -322,6 +342,7 @@ function draw() {
 }
 
 function mouseClicked() {
+    if (confirming == true) return
     if (gameState == "Default") return
     if (myTurn == false) return
     for (let k = 0; k < 5; k++) {
@@ -334,11 +355,38 @@ function mouseClicked() {
                         if (preSelection != undefined) {
                             for (let a = 0; a < preSelection.piece.possibleMoves.length; a++) {
                                 if (i == preSelection.piece.possibleMoves[a][0] && j == preSelection.piece.possibleMoves[a][1] && k == preSelection.piece.possibleMoves[a][2]) {
-                                    board[i][j][k].piece.img = preSelection.piece.img
-                                    preSelection.piece.img = null
+                                    if (preSelection.piece.img == "whitePawn") {
+                                        if (j == 0 && (k == 0 || k == 1)) {
+                                            confirming = true
+                                            promotionRadio.show()
+                                            promotionConfirmButton.show()
+                                        }
+                                        else {
+                                            board[i][j][k].piece.img = preSelection.piece.img
+                                            preSelection.piece.img = null
+                                            board[i][j][k].selected = false
+                                        }
+                                    }
+                                    else if (preSelection.piece.img == "blackPawn") {
+                                        if (j == 4 && (k == 4 || k == 3)) {
+                                            confirming = true
+                                            promotionRadio.show()
+                                            promotionConfirmButton.show()
+                                        }
+                                        else {
+                                            board[i][j][k].piece.img = preSelection.piece.img
+                                            preSelection.piece.img = null
+                                            board[i][j][k].selected = false
+                                        }
+                                    }
+                                    else {
+                                        board[i][j][k].piece.img = preSelection.piece.img
+                                        preSelection.piece.img = null
+                                        board[i][j][k].selected = false
+                                    }
+                                    if (confirming == true) return
                                     board[i][j][k].piece.color = preSelection.piece.color
                                     preSelection.piece.color = null
-                                    board[i][j][k].selected = false
                                     if (preSelection.piece.firstMove != undefined) {
                                         preSelection.firstMove = true
                                     }
@@ -350,7 +398,7 @@ function mouseClicked() {
                             }
                             preSelection.piece.possibleMoves = []
                         }
-
+                        if (confirming == true) return
                         preSelection = board[i][j][k]
 
                         //functions
@@ -839,7 +887,6 @@ function mouseClicked() {
                                     if (board[x][j + dir][k].piece.color != preSelection.piece.color) {
                                         if (board[x][j + dir][k].piece.color == null) {
                                             if (x != i - 1 && x != i + 1) {
-                                                console.log(1)
                                                 preSelection.piece.possibleMoves.push([x, j + dir, k])
                                             }
                                         }
@@ -940,6 +987,23 @@ function mouseDragged() {
 
 function mouseReleased() {
     lock = true
+}
+
+function promote() {
+    for (let k = 0; k < 5; k++) {
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                if (board[i][j][k].selected == true) {
+                    board[i][j][k].piece.img = preSelection.piece.color + promotionRadio.value()
+                    board[i][j][k].piece.color = preSelection.piece.color
+                    preSelection.piece.img = null
+                    board[i][j][k].selected = false
+                    confirming = false
+                    break
+                }
+            }
+        }
+    }
 }
 
 // PEER JS
