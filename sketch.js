@@ -403,16 +403,17 @@ function mouseClicked() {
 
                         //functions
                         let findPieceRook = function() {
+                            let totalMoves = []
                             for (let y = j + 1; y < board.length; y++) { //Check down
                                 if (board[i][y][k] == undefined) {
                                     break
                                 }
                                 else if (board[i][y][k].piece.color != preSelection.piece.color) {
                                     if (board[i][y][k].piece.color == null) {
-                                        preSelection.piece.possibleMoves.push([i, y, k])
+                                        totalMoves.push([i, y, k])
                                     }
                                     else {
-                                        preSelection.piece.possibleMoves.push([i, y, k])
+                                        totalMoves.push([i, y, k])
                                         break
                                     }
                                 }
@@ -426,10 +427,10 @@ function mouseClicked() {
                                 }
                                 else if (board[i][y][k].piece.color != preSelection.piece.color) {
                                     if (board[i][y][k].piece.color == null) {
-                                        preSelection.piece.possibleMoves.push([i, y, k])
+                                        totalMoves.push([i, y, k])
                                     }
                                     else {
-                                        preSelection.piece.possibleMoves.push([i, y, k])
+                                        totalMoves.push([i, y, k])
                                         break
                                     }
                                 }
@@ -443,10 +444,10 @@ function mouseClicked() {
                                 }
                                 else if (board[x][j][k].piece.color != preSelection.piece.color) {
                                     if (board[x][j][k].piece.color == null) {
-                                        preSelection.piece.possibleMoves.push([x, j, k])
+                                        totalMoves.push([x, j, k])
                                     }
                                     else {
-                                        preSelection.piece.possibleMoves.push([x, j, k])
+                                        totalMoves.push([x, j, k])
                                         break
                                     }
                                 }
@@ -460,10 +461,10 @@ function mouseClicked() {
                                 }
                                 else if (board[x][j][k].piece.color != preSelection.piece.color) {
                                     if (board[x][j][k].piece.color == null) {
-                                        preSelection.piece.possibleMoves.push([x, j, k])
+                                        totalMoves.push([x, j, k])
                                     }
                                     else {
-                                        preSelection.piece.possibleMoves.push([x, j, k])
+                                        totalMoves.push([x, j, k])
                                         break
                                     }
                                 }
@@ -477,10 +478,10 @@ function mouseClicked() {
                                 }
                                 else if (board[i][j][z].piece.color != preSelection.piece.color) {
                                     if (board[i][j][z].piece.color == null) {
-                                        preSelection.piece.possibleMoves.push([i, j, z])
+                                        totalMoves.push([i, j, z])
                                     }
                                     else {
-                                        preSelection.piece.possibleMoves.push([i, j, z])
+                                        totalMoves.push([i, j, z])
                                         break
                                     }
                                 }
@@ -494,10 +495,10 @@ function mouseClicked() {
                                 }
                                 else if (board[i][j][z].piece.color != preSelection.piece.color) {
                                     if (board[i][j][z].piece.color == null) {
-                                        preSelection.piece.possibleMoves.push([i, j, z])
+                                        totalMoves.push([i, j, z])
                                     }
                                     else {
-                                        preSelection.piece.possibleMoves.push([i, j, z])
+                                        totalMoves.push([i, j, z])
                                         break
                                     }
                                 }
@@ -505,8 +506,10 @@ function mouseClicked() {
                                     break
                                 }
                             }
+                            return totalMoves
                         }
                         let findPieceBishop = function() {
+                            let totalMoves = []
                             let checkDiagBottomRighttoUpperLeft = function(dir, over) {
                                 for (let x = i + dir * 1, y = j + dir * 1; x <= board.length && y <= board.length; x += dir * 1, y += dir * 1) {
                                     if (board[x] == undefined || board[x][y] == undefined) {
@@ -516,10 +519,10 @@ function mouseClicked() {
                                     }
                                     else if (board[x][y][k].piece.color != preSelection.piece.color) {
                                         if (board[x][y][k].piece.color == null) {
-                                            preSelection.piece.possibleMoves.push([x, y, k])
+                                            totalMoves.push([x, y, k])
                                         }
                                         else {
-                                            preSelection.piece.possibleMoves.push([x, y, k])
+                                            totalMoves.push([x, y, k])
                                             if (over == true) return
                                             checkDiagBottomRighttoUpperLeft(-1, true)
                                             break
@@ -541,10 +544,10 @@ function mouseClicked() {
                                     }
                                     else if (board[x][y][k].piece.color != preSelection.piece.color) {
                                         if (board[x][y][k].piece.color == null) {
-                                            preSelection.piece.possibleMoves.push([x, y, k])
+                                            totalMoves.push([x, y, k])
                                         }
                                         else {
-                                            preSelection.piece.possibleMoves.push([x, y, k])
+                                            totalMoves.push([x, y, k])
                                             if (over == true) return
                                             checkDiagBottomLefttoUpperRight(-1, true)
                                             break
@@ -566,10 +569,10 @@ function mouseClicked() {
                                     }
                                     else if (board[x][j][z].piece.color != preSelection.piece.color) {
                                         if (board[x][j][z].piece.color == null) {
-                                            preSelection.piece.possibleMoves.push([x, j, z])
+                                            totalMoves.push([x, j, z])
                                         }
                                         else {
-                                            preSelection.piece.possibleMoves.push([x, j, z])
+                                            totalMoves.push([x, j, z])
                                             if (over == true) return
                                             checkDiagSuperBottomLefttoSuperUpperRight(-1, true)
                                             break
@@ -591,10 +594,10 @@ function mouseClicked() {
                                     }
                                     else if (board[x][j][z].piece.color != preSelection.piece.color) {
                                         if (board[x][j][z].piece.color == null) {
-                                            preSelection.piece.possibleMoves.push([x, j, z])
+                                            totalMoves.push([x, j, z])
                                         }
                                         else {
-                                            preSelection.piece.possibleMoves.push([x, j, z])
+                                            totalMoves.push([x, j, z])
                                             if (over == true) return
                                             checkDiagSuperBottomRighttoSuperUpperLeft(-1, true)
                                             break
@@ -616,10 +619,10 @@ function mouseClicked() {
                                     }
                                     else if (board[i][y][z].piece.color != preSelection.piece.color) {
                                         if (board[i][y][z].piece.color == null) {
-                                            preSelection.piece.possibleMoves.push([i, y, z])
+                                            totalMoves.push([i, y, z])
                                         }
                                         else {
-                                            preSelection.piece.possibleMoves.push([i, y, z])
+                                            totalMoves.push([i, y, z])
                                             if (over == true) return
                                             checkFowardUptoBackwardDown(-1, true)
                                             break
@@ -641,10 +644,10 @@ function mouseClicked() {
                                     }
                                     else if (board[i][y][z].piece.color != preSelection.piece.color) {
                                         if (board[i][y][z].piece.color == null) {
-                                            preSelection.piece.possibleMoves.push([i, y, z])
+                                            totalMoves.push([i, y, z])
                                         }
                                         else {
-                                            preSelection.piece.possibleMoves.push([i, y, z])
+                                            totalMoves.push([i, y, z])
                                             if (over == true) return
                                             checkFowardDowntoBackwardUp(-1, true)
                                             break
@@ -663,8 +666,10 @@ function mouseClicked() {
                             checkDiagSuperBottomRighttoSuperUpperLeft(1, false)
                             checkFowardUptoBackwardDown(1, false)
                             checkFowardDowntoBackwardUp(1, false)
+                            return totalMoves
                         }
                         let findPieceUnicorn = function() {
+                            let totalMoves = []
                             let checkUpperLefttoLowerRight = function(dir, over) {
                                 for (let x = i + dir * 1, y = j + dir * 1, z = k + dir * 1; x <= board.length && y <= board.length && z <= board.length; x += dir * 1, y += dir * 1, z += dir * 1) {
                                     if (board[x] == undefined || board[x][y] == undefined || board[x][y][z] == undefined) {
@@ -674,10 +679,10 @@ function mouseClicked() {
                                     }
                                     else if (board[x][y][z].piece.color != preSelection.piece.color) {
                                         if (board[x][y][z].piece.color == null) {
-                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                            totalMoves.push([x, y, z])
                                         }
                                         else {
-                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                            totalMoves.push([x, y, z])
                                             if (over == true) return
                                             checkUpperLefttoLowerRight(-1, true)
                                             break
@@ -699,10 +704,10 @@ function mouseClicked() {
                                     }
                                     else if (board[x][y][z].piece.color != preSelection.piece.color) {
                                         if (board[x][y][z].piece.color == null) {
-                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                            totalMoves.push([x, y, z])
                                         }
                                         else {
-                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                            totalMoves.push([x, y, z])
                                             if (over == true) return
                                             checkUpperRighttoLowerLeft(-1, true)
                                             break
@@ -724,10 +729,10 @@ function mouseClicked() {
                                     }
                                     else if (board[x][y][z].piece.color != preSelection.piece.color) {
                                         if (board[x][y][z].piece.color == null) {
-                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                            totalMoves.push([x, y, z])
                                         }
                                         else {
-                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                            totalMoves.push([x, y, z])
                                             if (over == true) return
                                             checkForwardRighttoBackwardLeft(-1, true)
                                             break
@@ -749,10 +754,10 @@ function mouseClicked() {
                                     }
                                     else if (board[x][y][z].piece.color != preSelection.piece.color) {
                                         if (board[x][y][z].piece.color == null) {
-                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                            totalMoves.push([x, y, z])
                                         }
                                         else {
-                                            preSelection.piece.possibleMoves.push([x, y, z])
+                                            totalMoves.push([x, y, z])
                                             if (over == true) return
                                             checkForwardLefttoBackwardRight(-1, true)
                                             break
@@ -769,13 +774,17 @@ function mouseClicked() {
                             checkUpperRighttoLowerLeft(1, false)
                             checkForwardRighttoBackwardLeft(1, false)
                             checkForwardLefttoBackwardRight(1, false)
+                            return totalMoves
                         }
                         let findPieceQueen = function() {
-                            findPieceUnicorn()
-                            findPieceBishop()
-                            findPieceRook()
+                            let totalMoves = []
+                            findPieceUnicorn().forEach(i => totalMoves.push(i))
+                            findPieceBishop().forEach(i => totalMoves.push(i))
+                            findPieceRook().forEach(i => totalMoves.push(i))
+                            return totalMoves
                         }
                         let findPieceKing = function() {
+                            let totalMoves = []
                             let checkSquare = function(dir) {
                                 if (dir < -1) {
                                     return
@@ -785,10 +794,10 @@ function mouseClicked() {
                                         if (board[x] != undefined && board[x][y] != undefined && board[x][y][k + dir] != undefined) {
                                             if (board[x][y][k + dir].piece.color != preSelection.piece.color) {
                                                 if (board[x][y][k + dir].piece.color == null) {
-                                                    preSelection.piece.possibleMoves.push([x, y, k + dir])
+                                                    totalMoves.push([x, y, k + dir])
                                                 }
                                                 else {
-                                                    preSelection.piece.possibleMoves.push([x, y, k + dir])
+                                                    totalMoves.push([x, y, k + dir])
                                                     continue
                                                 }
                                             }
@@ -798,8 +807,10 @@ function mouseClicked() {
                                 checkSquare(dir - 1)
                             }
                             checkSquare(1)
+                            return totalMoves
                         }
                         let findPieceKnight = function() {
+                            let totalMoves = []
                             let upBottomHalf = function(dir, over) {
                                 for (let x = -2; x <= 2; x++) {
                                     if (x == 0) {
@@ -809,10 +820,10 @@ function mouseClicked() {
                                     if (board[i + x] != undefined && board[i + x][j + dir * y] != undefined && board[i + x][j + dir * y][k] != undefined) {
                                         if (board[i + x][j + dir * y][k].piece.color != preSelection.piece.color) {
                                             if (board[i + x][j + dir * y][k].piece.color == null) {
-                                                preSelection.piece.possibleMoves.push([i + x, j + dir * y, k])
+                                                totalMoves.push([i + x, j + dir * y, k])
                                             }
                                             else {
-                                                preSelection.piece.possibleMoves.push([i + x, j + dir * y, k])
+                                                totalMoves.push([i + x, j + dir * y, k])
                                             }
                                         }
                                     }
@@ -831,10 +842,10 @@ function mouseClicked() {
                                     if (board[i + x] != undefined && board[i + x][j] != undefined && board[i + x][j][k + dir * y] != undefined) {
                                         if (board[i + x][j][k + dir * y].piece.color != preSelection.piece.color) {
                                             if (board[i + x][j][k + dir * y].piece.color == null) {
-                                                preSelection.piece.possibleMoves.push([i + x, j, k + dir * y])
+                                                totalMoves.push([i + x, j, k + dir * y])
                                             }
                                             else {
-                                                preSelection.piece.possibleMoves.push([i + x, j, k + dir * y])
+                                                totalMoves.push([i + x, j, k + dir * y])
                                             }
                                         }
                                     }
@@ -853,10 +864,10 @@ function mouseClicked() {
                                     if (board[i] != undefined && board[i][j + x] != undefined && board[i][j + x][k + dir * y] != undefined) {
                                         if (board[i][j + x][k + dir * y].piece.color != preSelection.piece.color) {
                                             if (board[i][j + x][k + dir * y].piece.color == null) {
-                                                preSelection.piece.possibleMoves.push([i, j + x, k + dir * y])
+                                                totalMoves.push([i, j + x, k + dir * y])
                                             }
                                             else {
-                                                preSelection.piece.possibleMoves.push([i, j + x, k + dir * y])
+                                                totalMoves.push([i, j + x, k + dir * y])
                                             }
                                         }
                                     }
@@ -869,8 +880,10 @@ function mouseClicked() {
                             upBottomHalf(1, false)
                             topHorizDownHalf(1, false)
                             topVertiDownHalf(1, false)
+                            return totalMoves
                         }
                         let findPiecePawn = function(dir) {
+                            let totalMoves = []
                             for (let x = i - 1, y = j; x <= i + 1; x++) {
                                 if (x == i) {
                                     y = j + dir
@@ -880,72 +893,73 @@ function mouseClicked() {
                                 }
                                 if (board[x] != undefined && board[x][y] != undefined && board[x][y][k + dir] != undefined) {
                                     if (board[x][y][k + dir].piece.color != preSelection.piece.color && board[x][y][k + dir].piece.color != null) {
-                                        preSelection.piece.possibleMoves.push([x, y, k + dir])
+                                        totalMoves.push([x, y, k + dir])
                                     }
                                 }
                                 if (board[x] != undefined && board[x][j + dir] != undefined && board[x][j + dir][k] != undefined) {
                                     if (board[x][j + dir][k].piece.color != preSelection.piece.color) {
                                         if (board[x][j + dir][k].piece.color == null) {
                                             if (x != i - 1 && x != i + 1) {
-                                                preSelection.piece.possibleMoves.push([x, j + dir, k])
+                                                totalMoves.push([x, j + dir, k])
                                             }
                                         }
                                         else if (x != i) {
-                                            preSelection.piece.possibleMoves.push([x, j + dir, k])
+                                            totalMoves.push([x, j + dir, k])
                                         }
                                     }
                                 }
                             }
                             if (board[i][j][k + dir] != undefined) {
                                 if (board[i][j][k + dir].piece.color != preSelection.piece.color && board[i][j][k + dir].piece.color == null) {
-                                    preSelection.piece.possibleMoves.push([i, j, k + dir])
+                                    totalMoves.push([i, j, k + dir])
                                 }
                             }
+                            return totalMoves
                         }
                         
                         if (preSelection.piece.img != null) {
                             switch (preSelection.piece.img) {
                                 case "whitePawn":
-                                    findPiecePawn(-1)
+                                    findPiecePawn(-1).forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                                 case "whiteRook":
-                                    findPieceRook()
+                                    findPieceRook().forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                                 case "whiteBishop":
-                                    findPieceBishop()
+                                    findPieceBishop().forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                                 case "whiteUnicorn":
-                                    findPieceUnicorn()
+                                    findPieceUnicorn().forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                                 case "whiteQueen":
-                                    findPieceQueen()
+                                    findPieceQueen().forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                                 case "whiteKing":
-                                    findPieceKing()
+                                    findPieceKing().forEach(i => preSelection.piece.possibleMoves.push(i))
+                                break
+                                case "whiteKnight":
+                                    findPieceKnight().forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                                 case "blackPawn":
-                                    findPiecePawn(1)
-                                break
-                                case "blackKnight":
-                                    findPieceKnight()
+                                    findPiecePawn(1).forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                                 case "blackRook":
-                                    findPieceRook()
+                                    findPieceRook().forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                                 case "blackBishop":
-                                    findPieceBishop()
+                                    findPieceBishop().forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                                 case "blackUnicorn":
-                                    findPieceUnicorn()
+                                    findPieceUnicorn().forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                                 case "blackQueen":
-                                    findPieceQueen()
+                                    findPieceQueen().forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                                 case "blackKing":
-                                    findPieceKing()
+                                    findPieceKing().forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                                 case "blackKnight":
-                                    findPieceKnight()
+                                    findPieceKnight().forEach(i => preSelection.piece.possibleMoves.push(i))
                                 break
                             }
                         }
@@ -996,9 +1010,22 @@ function promote() {
                 if (board[i][j][k].selected == true) {
                     board[i][j][k].piece.img = preSelection.piece.color + promotionRadio.value()
                     board[i][j][k].piece.color = preSelection.piece.color
-                    preSelection.piece.img = null
+                    preSelection = {
+                        color: "",
+                        x: i,
+                        y: j,
+                        z: k,
+                        piece: {
+                            img: null,
+                            color: null,
+                            possibleMoves: []
+                        },
+                        selected: false
+                    }
                     board[i][j][k].selected = false
                     confirming = false
+                    promotionRadio.hide()
+                    promotionConfirmButton.hide()
                     break
                 }
             }
